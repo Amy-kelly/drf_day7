@@ -4,7 +4,7 @@ from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from rest_framework_jwt.serializers import jwt_payload_handler, jwt_encode_handler
 
-from userapp.models import User
+from userapp.models import User, Coffee
 
 
 class UserModelSerializer(ModelSerializer):
@@ -48,3 +48,9 @@ class UserModelSerializer(ModelSerializer):
             self.token = token
             self.obj = user_obj
         return attrs
+
+class CoffeeModelSerializer(ModelSerializer):
+    class Meta:
+        model = Coffee
+        fields = ("name","price","kinds")
+

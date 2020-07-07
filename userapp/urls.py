@@ -10,5 +10,6 @@ urlpatterns = [
     url(r"test2/",obtain_jwt_token),
     path("name/",views.UserAPIView.as_view()),
     path("login/",views.ManyLoginAPIView.as_view()),
+    path("coffees/",views.CoffeeQueryAPIView.as_view())
 
 ]

@@ -3,6 +3,7 @@ from rest_framework import exceptions
 from rest_framework_jwt.authentication import BaseJSONWebTokenAuthentication, jwt_decode_handler
 
 
+
 class JWTAuthentication(BaseJSONWebTokenAuthentication):
 
     def authenticate(self, request):

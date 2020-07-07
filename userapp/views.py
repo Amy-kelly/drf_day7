@@ -4,6 +4,9 @@ from django.shortcuts import render
 
 # Create your views here.
 # from rest_framework import request
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter,OrderingFilter
+from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
@@ -13,8 +16,10 @@ from rest_framework_jwt.serializers import jwt_payload_handler, jwt_encode_handl
 from rest_framework_jwt.views import JSONWebTokenAPIView
 
 from utils.response import APIResponse
-from .models import User
-from .serializers import UserModelSerializer
+from .models import User, Coffee
+from .serializers import UserModelSerializer,CoffeeModelSerializer
+from .filter import LimitFilter,CoffeeFilterSet
+from .paginations import MyBasePagination,MyCursorPagination,MyOffsetPagination
 
 class UserAPIView(APIView):
     #权限类  只允许认证通过的用户访问   游客无权访问
@@ -51,3 +56,14 @@ class ManyLoginAPIView(APIView):
 
         return APIResponse(data_message="error")
 
+class CoffeeQueryAPIView(ListAPIView):
+    queryset = Coffee.objects.all()
+    serializer_class = CoffeeModelSerializer
+    #配置过滤器类
+    filter_backends = [SearchFilter,OrderingFilter,LimitFilter,DjangoFilterBackend]
+    #指定搜索条件
+    search_fields = ["name","price"]
+    #排序条件
+    ordering = ["price"]
+    pagination_class = MyBasePagination
+    filter_class = CoffeeFilterSet
